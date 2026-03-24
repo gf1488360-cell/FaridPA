@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1b3e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FaridPA">
+<link rel="apple-touch-icon" href="https://gf1488360-cell.github.io/FaridAI/icons/icon-192.png">
+<title>FaridPA — Personal Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #ffffff;
+  --off: #f5f7fa;
+  --off2: #eef1f6;
+  --navy: #0d1b3e;
+  --navy2: #162350;
+  --navy3: #1e2f63;
+  --blue: #2563eb;
+  --blue2: #3b82f6;
+  --accent: #38bdf8;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #0d1b3e;
+  --muted: #64748b;
+  --border: #e2e8f0;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overscroll-behavior:none;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--white);
+  color:var(--text);
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* ===== SCREENS ===== */
+.screen{
+  display:none;
+  min-height:100vh;
+  flex-direction:column;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  overflow-y:auto;
+  background:var(--white);
+  z-index:1;
+}
+.screen.active{
+  display:flex;
+  z-index:2;
+}
+
+/* ===== HOME ===== */
+#homeScreen{
+  background: var(--white);
+  padding: 0 0 30px;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  overflow-y:auto;
+}
+
+.home-header{
+  background: var(--navy);
+  padding: 60px 24px 40px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+}
+.home-header::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(37,99,235,0.3);
+}
+.home-header::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:150px;height:150px;border-radius:50%;
+  background:rgba(56,189,248,0.15);
+}
+.home-logo{
+  font-family:'Playfair Display',serif;
+  font-size:42px;font-weight:800;
+  color:white;
+  position:relative;z-index:2;
+  letter-spacing:-1px;
+  text-align:center;
+  line-height:1.1;
+}
+.home-logo span{color:var(--accent);}
+.home-tagline{
+  font-size:13px;color:rgba(255,255,255,0.55);
+  margin-top:8px;position:relative;z-index:2;
+  font-weight:400;text-align:center;
+  letter-spacing:0.3px;
+}
+.home-greeting{
+  font-size:14px;color:rgba(255,255,255,0.85);
+  margin-top:14px;position:relative;z-index:2;
+  font-weight:500;text-align:center;
+  width:100%;
+}
+.home-date{
+  font-size:11px;color:rgba(255,255,255,0.4);
+  margin-top:4px;position:relative;z-index:2;
+  text-align:center;
+}
+
+.modules-label{
+  font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:28px 24px 14px;
+}
+
+.modules-grid{
+  display:flex;flex-direction:column;gap:14px;
+  padding:0 20px;
+}
+
+.module-card{
+  background:var(--navy);
+  border-radius:20px;
+  padding:22px;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+  position:relative;
+  overflow:hidden;
+  animation: cardIn 0.5s ease both;
+}
+.module-card:nth-child(1){animation-delay:0.05s}
+.module-card:nth-child(2){animation-delay:0.1s}
+.module-card:nth-child(3){animation-delay:0.15s}
+.module-card:nth-child(4){animation-delay:0.2s}
+
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.module-card:active{transform:scale(0.97);}
+
+.module-card::after{
+  content:'';position:absolute;right:-20px;bottom:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+
+.module-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.module-icon{
+  width:46px;height:46px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  flex-shrink:0;
+}
+.m1 .module-icon{background:rgba(245,158,11,0.2);}
+.m2 .module-icon{background:rgba(16,185,129,0.2);}
+.m3 .module-icon{background:rgba(56,189,248,0.2);}
+.m4 .module-icon{background:rgba(52,211,153,0.2);}
+.m5 .module-icon{background:rgba(167,139,250,0.2);}
+.m6 .module-icon{background:rgba(251,146,60,0.2);}
+
+.module-lock{
+  width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+}
+
+.module-num{
+  font-size:10px;font-weight:700;
+  color:rgba(255,255,255,0.3);
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.module-name{
+  font-family:'Playfair Display',serif;
+  font-size:19px;font-weight:700;
+  color:white;line-height:1.2;margin-bottom:6px;
+}
+.module-desc{
+  font-size:12px;color:rgba(255,255,255,0.5);
+  line-height:1.5;
+}
+
+.module-bar{
+  height:3px;border-radius:99px;background:rgba(255,255,255,0.1);
+  margin-top:16px;overflow:hidden;
+}
+.module-bar-fill{height:100%;border-radius:99px;transition:width 0.8s ease;}
+.m1 .module-bar-fill{background:var(--gold);}
+.m2 .module-bar-fill{background:var(--green);}
+.m3 .module-bar-fill{background:var(--accent);}
+.m4 .module-bar-fill{background:#34d399;}
+.m5 .module-bar-fill{background:#a78bfa;}
+.m6 .module-bar-fill{background:#fb923c;}
+
+/* ===== MODULE HEADER ===== */
+.mod-header{
+  background:var(--navy);
+  padding:48px 20px 22px;
+  display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;z-index:50;
+}
+.back-btn{
+  width:38px;height:38px;border-radius:11px;
+  background:rgba(255,255,255,0.12);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:white;flex-shrink:0;
+  transition:background 0.2s;
+}
+.back-btn:active{background:rgba(255,255,255,0.2);}
+.mod-header-text h2{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:white;
+}
+.mod-header-text p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
+
+.mod-body{flex:1;padding:20px;overflow-y:auto;padding-bottom:80px;}
+
+/* ===== PIN LOCK ===== */
+#pinScreen{
+  background:var(--navy);
+  align-items:center;justify-content:center;
+  padding:40px 30px;
+  text-align:center;
+}
+.pin-logo{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:800;color:white;margin-bottom:6px;
+}
+.pin-logo span{color:var(--gold);}
+.pin-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:40px;}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:36px;}
+.pin-dot{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.3);
+  background:transparent;transition:all 0.2s;
+}
+.pin-dot.filled{background:var(--gold);border-color:var(--gold);}
+.pin-dot.error{background:var(--red);border-color:var(--red);}
+.pin-error{font-size:13px;color:var(--red);margin-bottom:16px;min-height:20px;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px;}
+.pin-key{
+  aspect-ratio:1;border-radius:16px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.1);
+  color:white;font-size:22px;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;font-family:'Playfair Display',serif;
+}
+.pin-key:active{background:rgba(245,158,11,0.3);border-color:var(--gold);transform:scale(0.93);}
+.pin-key.wide{font-size:18px;}
+.pin-back-btn{
+  margin-top:24px;padding:10px 24px;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;
+}
+
+/* ===== MODULE 1: LONG TERM PLANNING ===== */
+.semester-add-btn{
+  width:100%;padding:13px;border-radius:14px;
+  background:var(--navy);color:white;
+  border:2px dashed rgba(255,255,255,0.2);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all 0.2s;margin-bottom:16px;
+}
+.semester-add-btn:active{opacity:0.8;}
+
+.semester-card{
+  background:var(--navy);border-radius:16px;
+  padding:16px;margin-bottom:12px;
+}
+.semester-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.semester-title{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:700;color:white;
+}
+.semester-phase{
+  font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;
+}
+.phase-current{background:rgba(16,185,129,0.2);color:#34d399;}
+.phase-future{background:rgba(56,189,248,0.15);color:var(--accent);}
+.phase-post{background:rgba(245,158,11,0.15);color:var(--gold);}
+
+.semester-goal{
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;padding:10px 12px;
+  margin-bottom:8px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.semester-goal-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;margin-top:5px;
+}
+.semester-goal-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.4;flex:1;}
+.semester-goal-del{
+  color:rgba(255,255,255,0.2);cursor:pointer;font-size:14px;
+  padding:2px;flex-shrink:0;
+}
+.semester-goal-del:active{color:var(--red);}
+
+.add-goal-row{display:flex;gap:8px;margin-top:8px;}
+.add-goal-input{
+  flex:1;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;padding:8px 12px;
+  font-size:12px;color:white;
+  font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+}
+.add-goal-input::placeholder{color:rgba(255,255,255,0.3);}
+.add-goal-input:focus{border-color:rgba(56,189,248,0.5);}
+.add-goal-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--blue);border:none;
+  color:white;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.2s;
+}
+.add-goal-btn:active{opacity:0.7;}
+
+/* ===== MODULE 2: TO-DO LIST ===== */
+.todo-cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;scrollbar-width:none;}
+.todo-cats::-webkit-scrollbar{display:none;}
+.todo-cat{
+  padding:5px 14px;border-radius:99px;font-size:11px;font-weight:600;
+  border:1.5px solid var(--border);background:white;color:var(--muted);
+  cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;
+}
+.todo-cat.active{background:var(--navy);color:white;border-color:var(--navy);}
+
+.todo-add-box{
+  background:var(--off);border:1.5px solid var(--border);
+  border-radius:14px;padding:14px;margin-bottom:16px;
+}
+.todo-add-row{display:flex;gap:10px;align-items:center;}
+.todo-add-input{
+  flex:1;background:white;border:1.5px solid var(--border);
+  border-radius:10px;padding:9px 13px;font-size:13px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+  transition:border-color 0.2s;
+}
+.todo-add-input:focus{border-color:var(--navy);}
+.todo-add-input::placeholder{color:var(--muted);}
+.todo-submit{
+  padding:9px 16px;border-radius:10px;
+  background:var(--navy);color:white;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;transition:opacity 0.2s;
+}
+.todo-submit:active{opacity:0.7;}
+
+.todo-options{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.todo-opt{
+  padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;
+  border:1.5px solid var(--border);background:white;color:var(--muted);cursor:pointer;
+  transition:all 0.2s;
+}
+.todo-opt.sel{border-color:var(--navy);color:var(--navy);background:var(--off);}
+select.todo-opt{font-family:'Plus Jakarta Sans',sans-serif;appearance:none;padding-right:14px;}
+
+.todo-item{
+  background:white;border:1.5px solid var(--border);
+  border-radius:14px;padding:13px 14px;margin-bottom:9px;
+  display:flex;align-items:flex-start;gap:11px;
+  transition:opacity 0.3s;animation:fadeSlide 0.3s ease;
+}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.todo-item.done{opacity:0.45;}
+.todo-check{
+  width:22px;height:22px;border-radius:7px;
+  border:2px solid var(--border);cursor:pointer;
+  flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.todo-check.checked{background:var(--navy);border-color:var(--navy);}
+.todo-check.checked::after{content:'✓';color:white;font-size:12px;font-weight:700;}
+.todo-content{flex:1;}
+.todo-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px;line-height:1.4;}
+.todo-item.done .todo-title{text-decoration:line-through;color:var(--muted);}
+.todo-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.tbadge{
+  padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;
+}
+.tbadge-assign{background:#eff6ff;color:#2563eb;}
+.tbadge-quiz{background:#fef3c7;color:#d97706;}
+.tbadge-prep{background:#ecfdf5;color:#059669;}
+.tbadge-other{background:var(--off2);color:var(--muted);}
+.tbadge-high{background:#fef2f2;color:#ef4444;}
+.tbadge-med{background:#fffbeb;color:#d97706;}
+.tbadge-low{background:#f0fdf4;color:#16a34a;}
+.todo-del{color:var(--border);cursor:pointer;font-size:16px;padding:2px;flex-shrink:0;transition:color 0.2s;}
+.todo-del:active{color:var(--red);}
+
+.empty-box{text-align:center;padding:40px 20px;}
+.empty-box .e-icon{font-size:40px;margin-bottom:10px;}
+.empty-box p{font-size:13px;color:var(--muted);}
+
+/* ===== MODULE 3: DAILY HABITS ===== */
+.habits-date{
+  text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px;
+  font-weight:500;
+}
+.habit-section-title{
+  font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;
+}
+.habit-item{
+  background:white;border:1.5px solid var(--border);
+  border-radius:14px;padding:13px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+}
+.habit-check{
+  width:24px;height:24px;border-radius:8px;
+  border:2px solid var(--border);cursor:pointer;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.habit-check.done{background:var(--navy);border-color:var(--navy);}
+.habit-check.done::after{content:'✓';color:white;font-size:12px;font-weight:700;}
+.habit-info{flex:1;}
+.habit-name{font-size:13px;font-weight:600;color:var(--text);}
+.habit-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.habit-streak{
+  font-size:11px;font-weight:700;color:var(--gold);
+  background:#fef3c7;padding:3px 8px;border-radius:99px;
+  flex-shrink:0;
+}
+.habit-progress-ring{
+  width:44px;height:44px;flex-shrink:0;
+}
+.habit-ring-bg{fill:none;stroke:var(--off2);stroke-width:4;}
+.habit-ring-fill{fill:none;stroke:var(--navy);stroke-width:4;stroke-linecap:round;
+  stroke-dasharray:113;stroke-dashoffset:113;transition:stroke-dashoffset 1s ease;
+  transform:rotate(-90deg);transform-origin:50% 50%;
+}
+.habit-ring-text{font-size:10px;font-weight:700;fill:var(--navy);text-anchor:middle;dominant-baseline:middle;}
+
+
+
+/* ===== MODALS ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);
+  z-index:200;display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:white;border-radius:24px 24px 0 0;
+  width:100%;max-width:430px;padding:24px 20px 36px;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;color:var(--navy);
+  margin-bottom:16px;
+}
+.modal-input{
+  width:100%;background:var(--off);border:1.5px solid var(--border);
+  border-radius:12px;padding:11px 14px;font-size:13px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+  margin-bottom:10px;transition:border-color 0.2s;
+}
+.modal-input:focus{border-color:var(--navy);}
+.modal-row{display:flex;gap:8px;margin-bottom:10px;}
+.modal-select{
+  flex:1;background:var(--off);border:1.5px solid var(--border);
+  border-radius:12px;padding:10px 12px;font-size:12px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+}
+.modal-btn{
+  width:100%;padding:13px;border-radius:12px;
+  background:var(--navy);color:white;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:opacity 0.2s;margin-top:6px;
+}
+.modal-btn:active{opacity:0.7;}
+.modal-cancel{
+  width:100%;padding:11px;border-radius:12px;
+  background:var(--off);color:var(--muted);border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;
+  cursor:pointer;margin-top:8px;
+}
+
+/* ===== NOTIFS ===== */
+.notif-wrap{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  width:90%;max-width:380px;z-index:9999;pointer-events:none;
+}
+.notif{
+  background:var(--navy);border-radius:14px;
+  padding:12px 14px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 32px rgba(13,27,62,0.35);
+  transform:translateY(-80px);opacity:0;
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:all;margin-bottom:8px;
+}
+.notif.show{transform:translateY(0);opacity:1;}
+.notif-icon{font-size:18px;flex-shrink:0;}
+.notif-t{font-size:12px;font-weight:700;color:white;margin-bottom:1px;}
+.notif-b{font-size:11px;color:rgba(255,255,255,0.55);}
+.notif-x{color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;margin-left:auto;}
+
+/* ===== UTILS ===== */
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+input[type=datetime-local]{
+  background:var(--off);border:1.5px solid var(--border);
+  border-radius:12px;padding:10px 12px;font-size:12px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;
+  outline:none;width:100%;margin-bottom:10px;
+}
+input[type=datetime-local]:focus{border-color:var(--navy);}
+
+/* ===== CONFIRM / EDIT MODALS ===== */
+.confirm-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  padding:24px;backdrop-filter:blur(6px);
+}
+.confirm-overlay.open{display:flex;}
+.confirm-box{
+  background:white;border-radius:20px;
+  width:100%;max-width:340px;padding:24px;
+  animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  text-align:center;
+}
+@keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+.confirm-icon{font-size:40px;margin-bottom:12px;}
+.confirm-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.confirm-msg{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px;}
+.confirm-btns{display:flex;gap:10px;}
+.confirm-yes{
+  flex:1;padding:12px;border-radius:11px;
+  background:var(--red);color:white;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:opacity 0.2s;
+}
+.confirm-yes:active{opacity:0.8;}
+.confirm-no{
+  flex:1;padding:12px;border-radius:11px;
+  background:var(--off);color:var(--muted);border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;
+}
+
+/* PIN confirm box inside confirm flow */
+.pin-confirm-box{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.pin-confirm-box.show{display:block;}
+.pin-confirm-label{font-size:12px;color:var(--muted);margin-bottom:8px;text-align:center;}
+.pin-confirm-input{
+  width:100%;background:var(--off);border:1.5px solid var(--border);
+  border-radius:10px;padding:11px 14px;font-size:18px;letter-spacing:8px;
+  text-align:center;font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+  color:var(--navy);font-weight:700;
+}
+.pin-confirm-input:focus{border-color:var(--navy);}
+.pin-confirm-btn{
+  width:100%;margin-top:10px;padding:12px;border-radius:11px;
+  background:var(--navy);color:white;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;
+}
+.pin-error-msg{font-size:12px;color:var(--red);margin-top:6px;text-align:center;min-height:18px;}
+
+/* Edit modal */
+.edit-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  z-index:500;display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.edit-overlay.open{display:flex;}
+.edit-box{
+  background:white;border-radius:24px 24px 0 0;
+  width:100%;max-width:430px;padding:24px 20px 36px;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.edit-title{
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:700;
+  color:var(--navy);margin-bottom:16px;
+}
+.edit-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.edit-input{
+  width:100%;background:var(--off);border:1.5px solid var(--border);
+  border-radius:12px;padding:11px 14px;font-size:13px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+  margin-bottom:10px;transition:border-color 0.2s;
+}
+.edit-input:focus{border-color:var(--navy);}
+.edit-row{display:flex;gap:8px;margin-bottom:10px;}
+.edit-select{
+  flex:1;background:var(--off);border:1.5px solid var(--border);
+  border-radius:12px;padding:10px 12px;font-size:12px;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+}
+.edit-save{
+  width:100%;padding:13px;border-radius:12px;
+  background:var(--navy);color:white;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-top:4px;transition:opacity 0.2s;
+}
+.edit-save:active{opacity:0.7;}
+.edit-cancel{
+  width:100%;padding:11px;border-radius:12px;
+  background:var(--off);color:var(--muted);border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;
+  cursor:pointer;margin-top:8px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NOTIF -->
+<div class="notif-wrap" id="nw"></div>
+
+<!-- ========== HOME ========== -->
+<div class="screen active" id="homeScreen">
+  <div class="home-header">
+    <div class="home-logo">Farid<span>PA</span></div>
+    <div class="home-tagline">Your Personal AI Assistant</div>
+    <div class="home-greeting" id="homeGreeting">Good morning, Ghulam Farid 👋</div>
+    <div class="home-date" id="homeDate"></div>
+  </div>
+  <div class="modules-label">MODULES</div>
+  <div class="modules-grid">
+    <div class="module-card m1" onclick="openModule(1)">
+      <div class="module-card-top">
+        <div class="module-icon">🗺️</div>
+        <div class="module-lock">🔒</div>
+      </div>
+      <div class="module-num">Module 01</div>
+      <div class="module-name">Long-Term Planning</div>
+      <div class="module-desc">Semesters, graduation goals & life roadmap</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m1bar" style="width:0%"></div></div>
+    </div>
+    <div class="module-card m2" onclick="openModule(2)">
+      <div class="module-card-top">
+        <div class="module-icon">📝</div>
+      </div>
+      <div class="module-num">Module 02</div>
+      <div class="module-name">To-Do List</div>
+      <div class="module-desc">Assignments, quizzes, deadlines & prep</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m2bar" style="width:0%"></div></div>
+    </div>
+    <div class="module-card m3" onclick="openModule(3)">
+      <div class="module-card-top">
+        <div class="module-icon">🔄</div>
+      </div>
+      <div class="module-num">Module 03</div>
+      <div class="module-name">Daily Routine</div>
+      <div class="module-desc">Add your daily & weekly tasks to complete</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m3bar" style="width:0%"></div></div>
+    </div>
+    <div class="module-card m4" onclick="openModule(4)">
+      <div class="module-card-top">
+        <div class="module-icon">📚</div>
+      </div>
+      <div class="module-num">Module 04</div>
+      <div class="module-name">Learning Log</div>
+      <div class="module-desc">Books, courses & videos — one key lesson each</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m4bar" style="width:0%"></div></div>
+    </div>
+    <div class="module-card m5" onclick="openModule(5)">
+      <div class="module-card-top">
+        <div class="module-icon">💡</div>
+      </div>
+      <div class="module-num">Module 05</div>
+      <div class="module-name">Ideas Vault</div>
+      <div class="module-desc">Product ideas, business concepts & projects</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m5bar" style="width:0%"></div></div>
+    </div>
+    <div class="module-card m6" onclick="openModule(6)">
+      <div class="module-card-top">
+        <div class="module-icon">🤝</div>
+      </div>
+      <div class="module-num">Module 06</div>
+      <div class="module-name">Network Tracker</div>
+      <div class="module-desc">Mentors, teachers, friends & all contacts</div>
+      <div class="module-bar"><div class="module-bar-fill" id="m6bar" style="width:0%"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PIN SCREEN ========== -->
+<div class="screen" id="pinScreen">
+  <div class="pin-logo">Farid<span>PA</span></div>
+  <div class="pin-sub">Enter PIN to access Long-Term Planning</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="pd0"></div>
+    <div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div>
+    <div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-error" id="pinError"></div>
+  <div class="pin-pad">
+    <div class="pin-key" onclick="pinPress('1')">1</div>
+    <div class="pin-key" onclick="pinPress('2')">2</div>
+    <div class="pin-key" onclick="pinPress('3')">3</div>
+    <div class="pin-key" onclick="pinPress('4')">4</div>
+    <div class="pin-key" onclick="pinPress('5')">5</div>
+    <div class="pin-key" onclick="pinPress('6')">6</div>
+    <div class="pin-key" onclick="pinPress('7')">7</div>
+    <div class="pin-key" onclick="pinPress('8')">8</div>
+    <div class="pin-key" onclick="pinPress('9')">9</div>
+    <div class="pin-key wide" onclick="pinClear()">⌫</div>
+    <div class="pin-key" onclick="pinPress('0')">0</div>
+    <div class="pin-key wide" onclick="pinSubmit()">✓</div>
+  </div>
+  <button class="pin-back-btn" onclick="goHome()">← Back</button>
+</div>
+
+<!-- ========== MODULE 1 ========== -->
+<div class="screen" id="m1Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>Long-Term Planning</h2>
+      <p>Your roadmap to success 🗺️</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <button class="semester-add-btn" onclick="openSemModal()">＋ Add Semester / Phase</button>
+    <div id="semesterList"></div>
+  </div>
+</div>
+
+<!-- ========== MODULE 2 ========== -->
+<div class="screen" id="m2Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>To-Do List</h2>
+      <p>Assignments, quizzes & prep 📝</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <div class="todo-cats" id="todoCats">
+      <div class="todo-cat active" onclick="setTodoCat('all',this)">All</div>
+      <div class="todo-cat" onclick="setTodoCat('assignment',this)">📄 Assignments</div>
+      <div class="todo-cat" onclick="setTodoCat('quiz',this)">📊 Quizzes</div>
+      <div class="todo-cat" onclick="setTodoCat('prep',this)">📖 Prep</div>
+      <div class="todo-cat" onclick="setTodoCat('other',this)">📌 Other</div>
+    </div>
+    <div class="todo-add-box">
+      <div class="todo-add-row">
+        <input class="todo-add-input" id="todoInput" placeholder="Add task..." onkeydown="if(event.key==='Enter')addTodo()">
+        <button class="todo-submit" onclick="addTodo()">Add</button>
+      </div>
+      <div class="todo-options">
+        <select class="todo-opt" id="todoType">
+          <option value="assignment">📄 Assignment</option>
+          <option value="quiz">📊 Quiz</option>
+          <option value="prep">📖 Prep</option>
+          <option value="other">📌 Other</option>
+        </select>
+        <select class="todo-opt" id="todoPri">
+          <option value="high">🔴 High</option>
+          <option value="med">🟡 Medium</option>
+          <option value="low">🟢 Low</option>
+        </select>
+        <input type="datetime-local" id="todoDl" style="margin:0;flex:1;min-width:0;">
+      </div>
+    </div>
+    <div id="todoList"></div>
+  </div>
+</div>
+
+<!-- ========== MODULE 3 ========== -->
+<div class="screen" id="m3Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>Daily Routine</h2>
+      <p>Build discipline, daily 🔄</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <div class="habits-date" id="habitsDate"></div>
+
+    <!-- Progress Ring -->
+    <div style="display:flex;align-items:center;gap:16px;background:var(--navy);border-radius:16px;padding:16px 18px;margin-bottom:16px;">
+      <svg class="habit-progress-ring" viewBox="0 0 44 44">
+        <circle class="habit-ring-bg" cx="22" cy="22" r="18"/>
+        <circle class="habit-ring-fill" id="dailyRing" cx="22" cy="22" r="18"/>
+        <text class="habit-ring-text" id="dailyRingText" x="22" y="22">0%</text>
+      </svg>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:white;">Daily Progress</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;" id="dailyRingLabel">0 of 0 done</div>
+      </div>
+    </div>
+
+    <!-- Add Habit -->
+    <div style="background:var(--off);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px;">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="todo-add-input" id="habitInput" placeholder="Add a task..." style="flex:1;" onkeydown="if(event.key==='Enter')addHabit()">
+        <button class="todo-submit" onclick="addHabit()">Add</button>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <select id="habitType" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="daily">📅 Daily</option>
+          <option value="weekly">📆 Weekly</option>
+        </select>
+        <input class="todo-add-input" id="habitMeta" placeholder="Note (optional)" style="flex:1;" onkeydown="if(event.key==='Enter')addHabit()">
+      </div>
+    </div>
+
+    <div class="habit-section-title">DAILY TASKS</div>
+    <div id="dailyHabits"></div>
+
+    <div class="habit-section-title" style="margin-top:20px;">WEEKLY TASKS</div>
+    <div id="weeklyHabits"></div>
+  </div>
+</div>
+
+<!-- ========== MODALS ========== -->
+<!-- Semester Modal -->
+<div class="modal-overlay" id="semModal">
+  <div class="modal-box">
+    <div class="modal-title">Add Semester / Phase</div>
+    <input class="modal-input" id="semTitle" placeholder="e.g. Semester 5, Post-Graduation...">
+    <div class="modal-row">
+      <select class="modal-select" id="semPhase">
+        <option value="current">🟢 Current</option>
+        <option value="future">🔵 Future</option>
+        <option value="post">🟡 Post-Grad</option>
+      </select>
+      <input class="modal-input" id="semYear" placeholder="Year e.g. 2025" style="margin:0;flex:1;">
+    </div>
+    <button class="modal-btn" onclick="addSemester()">Add Phase</button>
+    <button class="modal-cancel" onclick="closeModal('semModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== CONFIRM DELETE MODAL ========== -->
+<div class="confirm-overlay" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Remove Permanently?</div>
+    <div class="confirm-msg" id="confirmMsg">Are you sure you want to remove this permanently?</div>
+    <div class="confirm-btns">
+      <button class="confirm-no" onclick="closeConfirm()">No, Keep It</button>
+      <button class="confirm-yes" onclick="confirmDeleteAction()">Yes, Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== NETWORK DELETE + PIN MODAL ========== -->
+<div class="confirm-overlay" id="netConfirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon">🔒</div>
+    <div class="confirm-title">Remove Contact?</div>
+    <div class="confirm-msg">Are you sure you want to permanently remove this contact?</div>
+    <div class="confirm-btns">
+      <button class="confirm-no" onclick="closeNetConfirm()">No, Keep</button>
+      <button class="confirm-yes" id="netConfirmYesBtn" onclick="showPinConfirm()">Yes, Remove</button>
+    </div>
+    <div class="pin-confirm-box" id="pinConfirmBox">
+      <div class="pin-confirm-label">🔐 Enter PIN to confirm deletion</div>
+      <input class="pin-confirm-input" id="pinConfirmInput" type="password" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <div class="pin-error-msg" id="pinConfirmError"></div>
+      <button class="pin-confirm-btn" onclick="verifyPinAndDelete()">Confirm Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== EDIT TODO ========== -->
+<div class="edit-overlay" id="editTodoModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Task</div>
+    <div class="edit-label">Task Name</div>
+    <input class="edit-input" id="editTodoTitle" placeholder="Task name...">
+    <div class="edit-row">
+      <select class="edit-select" id="editTodoType">
+        <option value="assignment">📄 Assignment</option>
+        <option value="quiz">📊 Quiz</option>
+        <option value="prep">📖 Prep</option>
+        <option value="other">📌 Other</option>
+      </select>
+      <select class="edit-select" id="editTodoPri">
+        <option value="high">🔴 High</option>
+        <option value="med">🟡 Medium</option>
+        <option value="low">🟢 Low</option>
+      </select>
+    </div>
+    <div class="edit-label">Deadline</div>
+    <input type="datetime-local" class="edit-input" id="editTodoDl">
+    <button class="edit-save" onclick="saveEditTodo()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editTodoModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT HABIT ========== -->
+<div class="edit-overlay" id="editHabitModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Task</div>
+    <div class="edit-label">Task Name</div>
+    <input class="edit-input" id="editHabitName" placeholder="Task name...">
+    <div class="edit-label">Note (optional)</div>
+    <input class="edit-input" id="editHabitMeta" placeholder="Note...">
+    <div class="edit-label">Type</div>
+    <select class="edit-select" id="editHabitType" style="width:100%;margin-bottom:10px;">
+      <option value="daily">📅 Daily</option>
+      <option value="weekly">📆 Weekly</option>
+    </select>
+    <button class="edit-save" onclick="saveEditHabit()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editHabitModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT SEMESTER ========== -->
+<div class="edit-overlay" id="editSemModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Phase</div>
+    <div class="edit-label">Title</div>
+    <input class="edit-input" id="editSemTitle" placeholder="Phase title...">
+    <div class="edit-row">
+      <select class="edit-select" id="editSemPhase">
+        <option value="current">🟢 Current</option>
+        <option value="future">🔵 Future</option>
+        <option value="post">🟡 Post-Grad</option>
+      </select>
+      <input class="edit-input" id="editSemYear" placeholder="Year" style="margin:0;flex:1;">
+    </div>
+    <button class="edit-save" onclick="saveEditSem()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editSemModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT LEARN ========== -->
+<div class="edit-overlay" id="editLearnModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Resource</div>
+    <div class="edit-label">Title</div>
+    <input class="edit-input" id="editLearnTitle" placeholder="Book/Course title...">
+    <div class="edit-row">
+      <select class="edit-select" id="editLearnType">
+        <option value="book">📖 Book</option>
+        <option value="course">🎓 Course</option>
+        <option value="video">▶️ Video</option>
+        <option value="article">📰 Article</option>
+        <option value="podcast">🎙️ Podcast</option>
+      </select>
+      <select class="edit-select" id="editLearnCat">
+        <option value="ds">📊 Data Science</option>
+        <option value="pm">💼 Product Mgmt</option>
+        <option value="business">🏢 Business</option>
+        <option value="leadership">🎯 Leadership</option>
+        <option value="mba">🎓 MBA Prep</option>
+        <option value="selfdev">🌱 Self-Dev</option>
+        <option value="other">📌 Other</option>
+      </select>
+    </div>
+    <div class="edit-label">Key Lesson</div>
+    <input class="edit-input" id="editLearnLesson" placeholder="Key lesson or takeaway...">
+    <button class="edit-save" onclick="saveEditLearn()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editLearnModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT IDEA ========== -->
+<div class="edit-overlay" id="editIdeaModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Idea</div>
+    <div class="edit-label">Title</div>
+    <input class="edit-input" id="editIdeaTitle" placeholder="Idea title...">
+    <div class="edit-label">Description</div>
+    <textarea class="edit-input" id="editIdeaDesc" style="height:70px;resize:none;" placeholder="Describe your idea..."></textarea>
+    <div class="edit-row">
+      <select class="edit-select" id="editIdeaCat">
+        <option value="product">📱 Product</option>
+        <option value="business">🏢 Business</option>
+        <option value="ds">📊 DS Project</option>
+        <option value="research">🔬 Research</option>
+        <option value="career">🎯 Career</option>
+        <option value="other">📌 Other</option>
+      </select>
+      <select class="edit-select" id="editIdeaStatus">
+        <option value="raw">💭 Raw</option>
+        <option value="exploring">🔍 Exploring</option>
+        <option value="active">🚀 Active</option>
+        <option value="paused">⏸️ Paused</option>
+      </select>
+    </div>
+    <button class="edit-save" onclick="saveEditIdea()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editIdeaModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT CONTACT ========== -->
+<div class="edit-overlay" id="editContactModal">
+  <div class="edit-box">
+    <div class="edit-title">✏️ Edit Contact</div>
+    <div class="edit-row">
+      <input class="edit-input" id="editNetName" placeholder="Full name..." style="margin:0;flex:1;">
+      <input class="edit-input" id="editNetRole" placeholder="Role/Title..." style="margin:0;flex:1;">
+    </div>
+    <div class="edit-row" style="margin-top:10px;">
+      <input class="edit-input" id="editNetPhone" placeholder="📞 Phone..." style="margin:0;flex:1;" type="tel">
+      <input class="edit-input" id="editNetEmail" placeholder="📧 Email..." style="margin:0;flex:1;" type="email">
+    </div>
+    <div class="edit-row" style="margin-top:10px;">
+      <input class="edit-input" id="editNetLinkedin" placeholder="🔗 LinkedIn..." style="margin:0;flex:1;">
+      <input class="edit-input" id="editNetWhatsapp" placeholder="💬 WhatsApp..." style="margin:0;flex:1;">
+    </div>
+    <input class="edit-input" id="editNetOrg" placeholder="🏛️ University/Company..." style="margin-top:10px;">
+    <div class="edit-row" style="margin-top:10px;">
+      <select class="edit-select" id="editNetCat">
+        <option value="mentor">🌟 Mentor</option>
+        <option value="professor">📚 Professor</option>
+        <option value="teacher">🏫 Teacher</option>
+        <option value="classmate">👥 Classmate</option>
+        <option value="friend">🤝 Friend</option>
+        <option value="professional">💼 Professional</option>
+        <option value="senior">🎓 Senior</option>
+        <option value="investor">💰 Investor</option>
+        <option value="family">👨‍👩‍👦 Family</option>
+      </select>
+      <select class="edit-select" id="editNetStrength">
+        <option value="strong">🔴 Close</option>
+        <option value="medium">🟡 Growing</option>
+        <option value="weak">🟢 New</option>
+      </select>
+    </div>
+    <textarea class="edit-input" id="editNetNote" style="height:55px;resize:none;margin-top:10px;" placeholder="📝 Notes..."></textarea>
+    <button class="edit-save" onclick="saveEditContact()">Save Changes</button>
+    <button class="edit-cancel" onclick="closeEditModal('editContactModal')">Cancel</button>
+  </div>
+</div>
+
+
+
+<script>
+// ===== STATE =====
+let pinBuffer = '';
+const CORRECT_PIN = '5578';
+let semesters = JSON.parse(localStorage.getItem('fai_sems') || '[]');
+let todos = JSON.parse(localStorage.getItem('fai_todos') || '[]');
+let habits = JSON.parse(localStorage.getItem('fai_habits') || 'null');
+let todoCatFilter = 'all';
+
+// ===== INIT =====
+function init() {
+  const h = new Date().getHours();
+  const greet = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('homeGreeting').textContent = `${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, Ghulam Farid 👋`;
+  document.getElementById('homeDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  updateHomeBars();
+  initHabits();
+  renderTodos();
+  renderSemesters();
+  document.getElementById('habitsDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const now = new Date(); now.setHours(now.getHours()+2);
+  document.getElementById('todoDl').value = now.toISOString().slice(0,16);
+}
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.scrollTop = 0;
+  });
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  target.scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+function goHome() { showScreen('homeScreen'); updateHomeBars(); }
+
+function openModule(n) {
+  if (n===1) { showScreen('pinScreen'); pinBuffer=''; updatePinDots(); document.getElementById('pinError').textContent=''; return; }
+  if (n===2) { showScreen('m2Screen'); renderTodos(); return; }
+  if (n===3) { showScreen('m3Screen'); renderHabits(); return; }
+  if (n===4) { showScreen('m5Screen'); renderLearn(); return; }
+  if (n===5) { showScreen('m6Screen'); renderIdeas(); return; }
+  if (n===6) { showScreen('m7Screen'); renderContacts(); return; }
+}
+
+// ===== PIN =====
+function pinPress(v) {
+  if (pinBuffer.length>=4) return;
+  pinBuffer += v;
+  updatePinDots();
+  if (pinBuffer.length===4) setTimeout(pinSubmit, 200);
+}
+function pinClear() { pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); }
+function pinSubmit() {
+  if (pinBuffer===CORRECT_PIN) {
+    showScreen('m1Screen'); renderSemesters(); showNotif('🔓','Unlocked!','Welcome to Long-Term Planning','ok');
+  } else {
+    document.querySelectorAll('.pin-dot').forEach(d=>d.classList.add('error'));
+    document.getElementById('pinError').textContent = 'Incorrect PIN. Try again.';
+    setTimeout(()=>{ pinBuffer=''; updatePinDots(); document.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('error')); },800);
+  }
+}
+function updatePinDots() {
+  for(let i=0;i<4;i++) {
+    const d = document.getElementById('pd'+i);
+    d.classList.remove('filled','error');
+    if(i<pinBuffer.length) d.classList.add('filled');
+  }
+}
+
+// ===== MODULE 1: SEMESTERS =====
+function addSemester() {
+  const title = document.getElementById('semTitle').value.trim();
+  if (!title) return;
+  semesters.push({ id:Date.now(), title, phase:document.getElementById('semPhase').value, year:document.getElementById('semYear').value, goals:[] });
+  saveSems(); renderSemesters(); closeModal('semModal');
+  showNotif('📅','Phase Added!',title,'ok');
+}
+function addGoal(semId, inputEl) {
+  const txt = inputEl.value.trim(); if (!txt) return;
+  const sem = semesters.find(s=>s.id===semId); if (!sem) return;
+  sem.goals.push({ id:Date.now(), text:txt });
+  inputEl.value=''; saveSems(); renderSemesters();
+}
+function delGoal(semId, goalId) {
+  const sem = semesters.find(s=>s.id===semId); if (!sem) return;
+  sem.goals = sem.goals.filter(g=>g.id!==goalId);
+  saveSems(); renderSemesters();
+}
+function delSem(id) {
+  semesters = semesters.filter(s=>s.id!==id);
+  saveSems(); renderSemesters();
+}
+function saveSems() { localStorage.setItem('fai_sems',JSON.stringify(semesters)); }
+function renderSemesters() {
+  const el = document.getElementById('semesterList');
+  if (!el) return;
+  if (!semesters.length) { el.innerHTML=`<div class="empty-box"><div class="e-icon">🗺️</div><p>Add your first semester or life phase to start planning!</p></div>`; return; }
+  el.innerHTML = semesters.map(s=>`
+    <div class="semester-card">
+      <div class="semester-head">
+        <div class="semester-title">${s.title}${s.year?' — '+s.year:''}</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="semester-phase phase-${s.phase}">${s.phase==='current'?'Current':s.phase==='future'?'Future':'Post-Grad'}</span>
+          <button onclick="openEditSem(${s.id})" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;border-radius:7px;padding:3px 8px;font-size:11px;cursor:pointer;">✏️</button>
+          <button onclick="confirmDelete('Remove phase permanently?',function(){delSem(${s.id})})" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:7px;padding:3px 8px;font-size:11px;cursor:pointer;">✕</button>
+        </div>
+      </div>
+      ${s.goals.map(g=>`
+        <div class="semester-goal">
+          <div class="semester-goal-dot"></div>
+          <div class="semester-goal-text">${g.text}</div>
+          <div class="semester-goal-del" onclick="confirmDelete('Remove goal permanently?',function(){delGoal(${s.id},${g.id})})">✕</div>
+        </div>`).join('')}
+      <div class="add-goal-row">
+        <input class="add-goal-input" id="gi${s.id}" placeholder="Add goal..." onkeydown="if(event.key==='Enter')addGoal(${s.id},this)">
+        <button class="add-goal-btn" onclick="addGoal(${s.id},document.getElementById('gi${s.id}'))">+</button>
+      </div>
+    </div>`).join('');
+}
+function openSemModal() { document.getElementById('semTitle').value=''; document.getElementById('semYear').value=''; openModal('semModal'); }
+
+// ===== MODULE 2: TODO =====
+function addTodo() {
+  const input = document.getElementById('todoInput');
+  const t = input.value.trim(); if (!t) return;
+  todos.unshift({ id:Date.now(), title:t, type:document.getElementById('todoType').value, priority:document.getElementById('todoPri').value, deadline:document.getElementById('todoDl').value, done:false });
+  input.value=''; saveTodos(); renderTodos(); updateHomeBars();
+  showNotif('✅','Task Added',t.substring(0,30),'ok');
+}
+function toggleTodo(id) {
+  const t = todos.find(x=>x.id===id); if (!t) return;
+  t.done=!t.done; saveTodos(); renderTodos(); updateHomeBars();
+}
+function delTodo(id) { todos=todos.filter(x=>x.id!==id); saveTodos(); renderTodos(); updateHomeBars(); }
+function saveTodos() { localStorage.setItem('fai_todos',JSON.stringify(todos)); }
+function setTodoCat(cat,el) {
+  todoCatFilter=cat;
+  document.querySelectorAll('.todo-cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); renderTodos();
+}
+function renderTodos() {
+  const el = document.getElementById('todoList'); if (!el) return;
+  let list = todoCatFilter==='all' ? todos : todos.filter(t=>t.type===todoCatFilter);
+  list = [...list].sort((a,b)=>{
+    if(a.done!==b.done) return a.done?1:-1;
+    const p={high:0,med:1,low:2}; return p[a.priority]-p[b.priority];
+  });
+  if (!list.length) { el.innerHTML=`<div class="empty-box"><div class="e-icon">📝</div><p>No tasks here. Add one above!</p></div>`; return; }
+  const typeLabel={assignment:'📄 Assignment',quiz:'📊 Quiz',prep:'📖 Prep',other:'📌 Other'};
+  const typeCls={assignment:'tbadge-assign',quiz:'tbadge-quiz',prep:'tbadge-prep',other:'tbadge-other'};
+  const priCls={high:'tbadge-high',med:'tbadge-med',low:'tbadge-low'};
+  el.innerHTML = list.map(t=>{
+    const dl = t.deadline ? fmtDl(t.deadline) : '';
+    return `<div class="todo-item ${t.done?'done':''}">
+      <div class="todo-check ${t.done?'checked':''}" onclick="toggleTodo(${t.id})"></div>
+      <div class="todo-content">
+        <div class="todo-title">${t.title}</div>
+        <div class="todo-badges">
+          <span class="tbadge ${typeCls[t.type]}">${typeLabel[t.type]}</span>
+          <span class="tbadge ${priCls[t.priority]}">${t.priority==='high'?'🔴':t.priority==='med'?'🟡':'🟢'} ${t.priority}</span>
+          ${dl?`<span class="tbadge" style="background:var(--off2);color:var(--muted);">⏰ ${dl}</span>`:''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:center;flex-shrink:0;">
+        <button onclick="openEditTodo(${t.id})" style="background:#eff6ff;border:1px solid #bfdbfe;color:#2563eb;border-radius:7px;padding:4px 8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✏️</button>
+        <button onclick="confirmDelete('Remove task permanently?',function(){delTodo(${t.id})})" style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:7px;padding:4px 8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function fmtDl(dl) {
+  const d=new Date(dl),now=new Date(),diff=d-now;
+  if(diff<0) return 'Overdue';
+  if(diff<3600000) return `in ${Math.round(diff/60000)}m`;
+  if(diff<86400000) return `Today ${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
+  return d.toLocaleDateString([],{month:'short',day:'numeric'});
+}
+
+// ===== MODULE 3: HABITS =====
+function initHabits() {
+  // Clear old format that had fixed tasks
+  if (habits && (habits.daily?.some(h=>h.streak!==undefined))) {
+    habits=null; localStorage.removeItem('fai_habits');
+  }
+  if (!habits) { habits={daily:[],weekly:[],doneToday:[],lastReset:''}; saveHabits(); }
+  if (!habits.daily) habits.daily=[];
+  if (!habits.weekly) habits.weekly=[];
+  const today=new Date().toDateString();
+  if(habits.lastReset!==today){habits.doneToday=[];habits.lastReset=today;saveHabits();}
+}
+function saveHabits(){localStorage.setItem('fai_habits',JSON.stringify(habits));}
+function addHabit(){
+  const inp=document.getElementById('habitInput');
+  const name=inp.value.trim(); if(!name) return;
+  const type=document.getElementById('habitType').value;
+  const meta=document.getElementById('habitMeta').value.trim();
+  const h={id:Date.now(),name,meta:meta||'',type};
+  if(type==='daily') habits.daily.push(h);
+  else habits.weekly.push(h);
+  inp.value=''; document.getElementById('habitMeta').value='';
+  saveHabits(); renderHabits(); updateHomeBars();
+  showNotif('✅','Task Added',name.substring(0,30),'ok');
+}
+function delHabit(id){
+  habits.daily=habits.daily.filter(h=>h.id!==id);
+  habits.weekly=habits.weekly.filter(h=>h.id!==id);
+  habits.doneToday=habits.doneToday.filter(x=>x!==id);
+  saveHabits(); renderHabits(); updateHomeBars();
+}
+function toggleHabit(id){
+  const idx=habits.doneToday.indexOf(id);
+  if(idx>-1) habits.doneToday.splice(idx,1);
+  else habits.doneToday.push(id);
+  saveHabits(); renderHabits(); updateHomeBars();
+}
+function renderHabits(){
+  const dEl=document.getElementById('dailyHabits');
+  const wEl=document.getElementById('weeklyHabits');
+  if(!dEl||!wEl) return;
+  const totalAll=habits.daily.length+habits.weekly.length;
+  const doneAll=habits.doneToday.length;
+  const pct=totalAll>0?Math.round((doneAll/totalAll)*100):0;
+  const offset=113-(113*(pct/100));
+  const ring=document.getElementById('dailyRing');
+  const ringTxt=document.getElementById('dailyRingText');
+  const ringLbl=document.getElementById('dailyRingLabel');
+  if(ring) ring.style.strokeDashoffset=offset;
+  if(ringTxt) ringTxt.textContent=pct+'%';
+  if(ringLbl) ringLbl.textContent=`${doneAll} of ${totalAll} done`;
+
+  const renderList=(list,emptyMsg)=>{
+    if(!list.length) return `<div class="empty-box" style="padding:20px"><div class="e-icon" style="font-size:30px">📋</div><p>${emptyMsg}</p></div>`;
+    return list.map(h=>{
+      const done=habits.doneToday.includes(h.id);
+      const hid=h.id;
+      return `<div class="habit-item">
+        <div class="habit-check ${done?'done':''}" onclick="toggleHabit(${hid})"></div>
+        <div class="habit-info">
+          <div class="habit-name" style="${done?'text-decoration:line-through;opacity:0.5':''}">${h.name}</div>
+          ${h.meta?`<div class="habit-meta">${h.meta}</div>`:''}
+        </div>
+        <div style="display:flex;gap:5px;align-items:center;">
+          <button onclick="openEditHabit(${hid})" style="background:#eff6ff;border:1px solid #bfdbfe;color:#2563eb;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✏️</button>
+          <button onclick="confirmDelete('Remove task permanently?',function(){delHabit(${hid})})" style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  };
+  dEl.innerHTML=renderList(habits.daily,'No daily tasks yet. Add one above!');
+  wEl.innerHTML=renderList(habits.weekly,'No weekly tasks yet. Add one above!');
+}
+
+
+
+// ===== UTILS =====
+function updateHomeBars() {
+  if(semesters.length){const total=semesters.reduce((a,s)=>a+s.goals.length,0)||1;document.getElementById('m1bar').style.width=Math.min(100,total*10)+'%';}
+  if(todos.length){const pct=Math.round(todos.filter(t=>t.done).length/todos.length*100);document.getElementById('m2bar').style.width=pct+'%';}
+  if(habits){const total=habits.daily.length+habits.weekly.length;const pct=total?Math.round(habits.doneToday.length/total*100):0;document.getElementById('m3bar').style.width=pct+'%';}
+  const learns=JSON.parse(localStorage.getItem('fai_learns')||'[]');
+  const el5=document.getElementById('m4bar');if(el5)el5.style.width=Math.min(100,learns.length*5)+'%';
+  const ideas=JSON.parse(localStorage.getItem('fai_ideas')||'[]');
+  const el6=document.getElementById('m5bar');if(el6)el6.style.width=Math.min(100,ideas.length*10)+'%';
+  const contacts=JSON.parse(localStorage.getItem('fai_contacts')||'[]');
+  const el7=document.getElementById('m6bar');if(el7)el7.style.width=Math.min(100,contacts.length*5)+'%';
+}
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+function showNotif(icon,title,body,type='ok') {
+  const nw=document.getElementById('nw');
+  const id='n'+Date.now();
+  const d=document.createElement('div');
+  d.className='notif';d.id=id;
+  d.innerHTML=`<div class="notif-icon">${icon}</div><div style="flex:1"><div class="notif-t">${title}</div><div class="notif-b">${body}</div></div><div class="notif-x" onclick="rmNotif('${id}')">✕</div>`;
+  nw.appendChild(d);
+  setTimeout(()=>d.classList.add('show'),10);
+  setTimeout(()=>rmNotif(id),4000);
+}
+function rmNotif(id){const e=document.getElementById(id);if(!e)return;e.classList.remove('show');setTimeout(()=>e.remove(),400);}
+
+
+// ===== MODULE 5: LEARNING LOG =====
+let learns = JSON.parse(localStorage.getItem('fai_learns')||'[]');
+let learnFilter = 'all';
+let learnRating = 0;
+function setLearnRating(n){
+  learnRating=n;
+  document.querySelectorAll('.star').forEach((s,i)=>s.style.opacity=i<n?'1':'0.3');
+}
+function addLearn(){
+  const title=document.getElementById('learnTitle').value.trim();
+  if(!title){showNotif('⚠️','Empty','Enter a title','warn');return;}
+  learns.unshift({id:Date.now(),title,type:document.getElementById('learnType').value,cat:document.getElementById('learnCat').value,lesson:document.getElementById('learnLesson').value.trim(),rating:learnRating||3,date:new Date().toLocaleDateString()});
+  document.getElementById('learnTitle').value='';document.getElementById('learnLesson').value='';learnRating=0;
+  document.querySelectorAll('.star').forEach(s=>s.style.opacity='0.3');
+  localStorage.setItem('fai_learns',JSON.stringify(learns));
+  renderLearn();updateHomeBars();
+  showNotif('📚','Logged!',title.substring(0,28),'ok');
+}
+function delLearn(id){learns=learns.filter(l=>l.id!==id);localStorage.setItem('fai_learns',JSON.stringify(learns));renderLearn();updateHomeBars();}
+function setLearnFilter(f,el){learnFilter=f;document.querySelectorAll('#m5Screen .todo-cat').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderLearn();}
+function renderLearn(){
+  const el=document.getElementById('learnList');if(!el)return;
+  let list=learnFilter==='all'?learns:learns.filter(l=>l.cat===learnFilter);
+  if(!list.length){el.innerHTML=`<div class="empty-box"><div class="e-icon">📚</div><p>No entries yet. Log your first resource!</p></div>`;return;}
+  const typeIcon={book:'📖',course:'🎓',video:'▶️',article:'📰',podcast:'🎙️'};
+  const catLabel={ds:'📊 DS',pm:'💼 PM',business:'🏢 Business',leadership:'🎯 Leadership',mba:'🎓 MBA',selfdev:'🌱 Self-Dev',other:'📌 Other'};
+  el.innerHTML=list.map(l=>`
+    <div class="todo-item" style="flex-direction:column;align-items:stretch;gap:8px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="font-size:22px;flex-shrink:0;">${typeIcon[l.type]||'📌'}</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">${l.title}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
+            <span class="tbadge" style="background:#ecfdf5;color:#059669;">${catLabel[l.cat]||l.cat}</span>
+            <span class="tbadge" style="background:var(--off2);color:var(--muted);">📅 ${l.date}</span>
+            <span style="font-size:12px;">${'⭐'.repeat(l.rating)}</span>
+          </div>
+          ${l.lesson?`<div style="font-size:12px;color:var(--muted);margin-top:6px;padding:7px 10px;background:var(--off);border-radius:8px;line-height:1.5;">💡 ${l.lesson}</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="openEditLearn(${l.id})" style="background:#eff6ff;border:1px solid #bfdbfe;color:#2563eb;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">✏️</button>
+          <span class="todo-del" onclick="confirmDelete('Remove \''+l.title.substring(0,25)+'\' permanently?',function(){delLearn(${l.id})})">✕</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ===== MODULE 6: IDEAS VAULT =====
+let ideas = JSON.parse(localStorage.getItem('fai_ideas')||'[]');
+function addIdea(){
+  const title=document.getElementById('ideaTitle').value.trim();
+  if(!title){showNotif('⚠️','Empty','Enter an idea title','warn');return;}
+  ideas.unshift({id:Date.now(),title,desc:document.getElementById('ideaDesc').value.trim(),cat:document.getElementById('ideaCat').value,status:document.getElementById('ideaStatus').value,date:new Date().toLocaleDateString()});
+  document.getElementById('ideaTitle').value='';document.getElementById('ideaDesc').value='';
+  localStorage.setItem('fai_ideas',JSON.stringify(ideas));
+  renderIdeas();updateHomeBars();
+  showNotif('💡','Idea Saved!',title.substring(0,28),'ok');
+}
+function delIdea(id){ideas=ideas.filter(i=>i.id!==id);localStorage.setItem('fai_ideas',JSON.stringify(ideas));renderIdeas();updateHomeBars();}
+function cycleIdeaStatus(id){
+  const idea=ideas.find(i=>i.id===id);if(!idea)return;
+  const cycle=['raw','exploring','active','paused'];
+  idea.status=cycle[(cycle.indexOf(idea.status)+1)%cycle.length];
+  localStorage.setItem('fai_ideas',JSON.stringify(ideas));renderIdeas();
+}
+function renderIdeas(){
+  const el=document.getElementById('ideaList');if(!el)return;
+  if(!ideas.length){el.innerHTML=`<div class="empty-box"><div class="e-icon">💡</div><p>No ideas yet. Your next big idea starts here!</p></div>`;return;}
+  const catIcon={product:'📱',business:'🏢',ds:'📊',research:'🔬',career:'🎯',other:'📌'};
+  const statusStyle={raw:'background:#f1f5f9;color:#64748b;',exploring:'background:#eff6ff;color:#2563eb;',active:'background:#ecfdf5;color:#059669;',paused:'background:#fef3c7;color:#d97706;'};
+  const statusLabel={raw:'💭 Raw',exploring:'🔍 Exploring',active:'🚀 Active',paused:'⏸️ Paused'};
+  el.innerHTML=ideas.map(i=>`
+    <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;animation:fadeSlide 0.3s ease;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;">
+          <span style="font-size:20px;">${catIcon[i.cat]||'📌'}</span>
+          <div style="font-size:14px;font-weight:600;color:var(--text);">${i.title}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="openEditIdea(${i.id})" style="background:#eff6ff;border:1px solid #bfdbfe;color:#2563eb;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">✏️</button>
+          <span class="todo-del" onclick="confirmDelete('Remove \''+i.title.substring(0,25)+'\' permanently?',function(){delIdea(${i.id})})">✕</span>
+        </div>
+      </div>
+      ${i.desc?`<div style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px;padding:8px 10px;background:var(--off);border-radius:8px;">${i.desc}</div>`:''}
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:10px;color:var(--muted);">📅 ${i.date}</span>
+        <button onclick="cycleIdeaStatus(${i.id})" style="padding:4px 10px;border-radius:99px;border:none;cursor:pointer;font-size:11px;font-weight:600;${statusStyle[i.status]}">${statusLabel[i.status]}</button>
+      </div>
+    </div>`).join('');
+}
+
+// ===== MODULE 7: NETWORK TRACKER =====
+let contacts = JSON.parse(localStorage.getItem('fai_contacts')||'[]');
+let netFilter = 'all';
+function addContact(){
+  const name=document.getElementById('netName').value.trim();
+  if(!name){showNotif('⚠️','Empty','Enter a name','warn');return;}
+  contacts.unshift({
+    id:Date.now(),
+    name,
+    role:document.getElementById('netRole').value.trim(),
+    phone:document.getElementById('netPhone').value.trim(),
+    email:document.getElementById('netEmail').value.trim(),
+    linkedin:document.getElementById('netLinkedin').value.trim(),
+    whatsapp:document.getElementById('netWhatsapp').value.trim(),
+    org:document.getElementById('netOrg').value.trim(),
+    cat:document.getElementById('netCat').value,
+    strength:document.getElementById('netStrength').value,
+    note:document.getElementById('netNote').value.trim(),
+    date:new Date().toLocaleDateString(),
+    lastContact:''
+  });
+  ['netName','netRole','netPhone','netEmail','netLinkedin','netWhatsapp','netOrg','netNote'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  localStorage.setItem('fai_contacts',JSON.stringify(contacts));
+  renderContacts();updateHomeBars();
+  showNotif('🤝','Contact Added!',name,'ok');
+}
+function delContact(id){contacts=contacts.filter(c=>c.id!==id);localStorage.setItem('fai_contacts',JSON.stringify(contacts));renderContacts();updateHomeBars();}
+function touchContact(id){
+  const c=contacts.find(x=>x.id===id);if(!c)return;
+  c.lastContact=new Date().toLocaleDateString();
+  localStorage.setItem('fai_contacts',JSON.stringify(contacts));renderContacts();
+  showNotif('✅','Marked!','Last contact updated','ok');
+}
+function setNetFilter(f,el){netFilter=f;document.querySelectorAll('#m7Screen .todo-cat').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderContacts();}
+function renderContacts(){
+  const sEl=document.getElementById('netStats');
+  const lEl=document.getElementById('netList');
+  if(!lEl)return;
+  const total=contacts.length;
+  const mentors=contacts.filter(c=>c.cat==='mentor'||c.cat==='professor'||c.cat==='teacher').length;
+  const professionals=contacts.filter(c=>c.cat==='professional'||c.cat==='senior'||c.cat==='investor').length;
+  if(sEl)sEl.innerHTML=[
+    ['🌟',mentors,'Mentors','#f59e0b'],
+    ['💼',professionals,'Professionals','#2563eb'],
+    ['👥',total,'Total','#10b981']
+  ].map(([icon,n,label,color])=>`<div style="background:var(--navy);border-radius:12px;padding:12px;text-align:center;"><div style="font-size:20px;font-family:'Playfair Display',serif;font-weight:800;color:${color};">${n}</div><div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;">${icon} ${label}</div></div>`).join('');
+  let list=netFilter==='all'?contacts:contacts.filter(c=>c.cat===netFilter);
+  if(!list.length){lEl.innerHTML=`<div class="empty-box"><div class="e-icon">🤝</div><p>No contacts yet. Start building your network!</p></div>`;return;}
+  const catIcon={mentor:'🌟',professor:'📚',teacher:'🏫',classmate:'👥',friend:'🤝',professional:'💼',senior:'🎓',investor:'💰',family:'👨‍👩‍👦'};
+  const catLabel={mentor:'Mentor',professor:'Professor',teacher:'Teacher',classmate:'Classmate',friend:'Friend',professional:'Professional',senior:'Senior/Alumni',investor:'Investor',family:'Family'};
+  const strengthStyle={strong:'background:#fef2f2;color:#ef4444;',medium:'background:#fffbeb;color:#d97706;',weak:'background:#f0fdf4;color:#16a34a;'};
+  const strengthLabel={strong:'🔴 Close',medium:'🟡 Growing',weak:'🟢 New'};
+  lEl.innerHTML=list.map(c=>`
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:15px;margin-bottom:10px;animation:fadeSlide 0.3s ease;">
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${catIcon[c.cat]||'👤'}</div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:700;color:var(--text);">${c.name}</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;align-items:center;">
+            ${c.role?`<span style="font-size:12px;color:var(--muted);">${c.role}</span>`:''}
+            ${c.org?`<span style="font-size:11px;color:var(--muted);">• ${c.org}</span>`:''}
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;">
+            <span class="tbadge" style="background:#eff6ff;color:#2563eb;">${catIcon[c.cat]} ${catLabel[c.cat]||c.cat}</span>
+            <span class="tbadge" style="${strengthStyle[c.strength]||strengthStyle.weak}">${strengthLabel[c.strength]||'🟢 New'}</span>
+            ${c.lastContact?`<span class="tbadge" style="background:var(--off2);color:var(--muted);">Last: ${c.lastContact}</span>`:''}
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="openEditContact(${c.id})" style="background:#eff6ff;border:1px solid #bfdbfe;color:#2563eb;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">✏️</button>
+          <button onclick="confirmNetDelete(${c.id})" style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">🗑</button>
+        </div>
+      </div>
+      <!-- Contact Info -->
+      ${(c.phone||c.email||c.whatsapp||c.linkedin)?`
+      <div style="background:var(--off);border-radius:10px;padding:10px;margin-bottom:10px;display:flex;flex-direction:column;gap:6px;">
+        ${c.phone?`<a href="tel:${c.phone}" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:14px;">📞</span><span style="font-size:12px;color:var(--blue);font-weight:500;">${c.phone}</span></a>`:''}
+        ${c.whatsapp?`<a href="https://wa.me/${c.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:14px;">💬</span><span style="font-size:12px;color:#16a34a;font-weight:500;">${c.whatsapp}</span></a>`:''}
+        ${c.email?`<a href="mailto:${c.email}" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:14px;">📧</span><span style="font-size:12px;color:var(--blue);font-weight:500;">${c.email}</span></a>`:''}
+        ${c.linkedin?`<a href="${c.linkedin}" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:14px;">🔗</span><span style="font-size:12px;color:var(--blue);font-weight:500;">LinkedIn Profile</span></a>`:''}
+      </div>`:''}
+      <!-- Notes -->
+      ${c.note?`<div style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px;padding:8px 10px;background:var(--off);border-radius:8px;">📝 ${c.note}</div>`:''}
+      <!-- Actions -->
+      <div style="display:flex;gap:6px;">
+        <button onclick="touchContact(${c.id})" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);background:var(--off);color:var(--muted);font-size:11px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✓ Touched Today</button>
+        ${c.phone?`<a href="tel:${c.phone}" style="flex:1;padding:7px;border-radius:8px;border:1px solid #bbf7d0;background:#f0fdf4;color:#16a34a;font-size:11px;cursor:pointer;text-align:center;text-decoration:none;font-weight:600;">📞 Call</a>`:''}
+        ${c.whatsapp?`<a href="https://wa.me/${c.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" style="flex:1;padding:7px;border-radius:8px;border:1px solid #bbf7d0;background:#f0fdf4;color:#16a34a;font-size:11px;cursor:pointer;text-align:center;text-decoration:none;font-weight:600;">💬 WhatsApp</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+
+// ===== CONFIRM DELETE SYSTEM =====
+let pendingDeleteFn = null;
+let pendingNetContactId = null;
+
+function confirmDelete(msg, deleteFn) {
+  pendingDeleteFn = deleteFn;
+  document.getElementById('confirmMsg').textContent = msg || 'Are you sure you want to remove this permanently?';
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirmModal').classList.remove('open');
+  pendingDeleteFn = null;
+}
+function confirmDeleteAction() {
+  if (pendingDeleteFn) pendingDeleteFn();
+  closeConfirm();
+}
+
+// Network delete with PIN
+function confirmNetDelete(id) {
+  pendingNetContactId = id;
+  document.getElementById('pinConfirmBox').classList.remove('show');
+  document.getElementById('pinConfirmInput').value = '';
+  document.getElementById('pinConfirmError').textContent = '';
+  document.getElementById('netConfirmModal').classList.add('open');
+}
+function closeNetConfirm() {
+  document.getElementById('netConfirmModal').classList.remove('open');
+  pendingNetContactId = null;
+}
+function showPinConfirm() {
+  document.getElementById('pinConfirmBox').classList.add('show');
+  document.getElementById('pinConfirmInput').focus();
+}
+function verifyPinAndDelete() {
+  const pin = document.getElementById('pinConfirmInput').value.trim();
+  if (pin === CORRECT_PIN) {
+    if (pendingNetContactId !== null) {
+      contacts = contacts.filter(c => c.id !== pendingNetContactId);
+      localStorage.setItem('fai_contacts', JSON.stringify(contacts));
+      renderContacts(); updateHomeBars();
+      showNotif('🗑️', 'Contact Deleted', 'Contact permanently removed', 'ok');
+    }
+    closeNetConfirm();
+  } else {
+    document.getElementById('pinConfirmError').textContent = '❌ Wrong PIN. Try again.';
+    document.getElementById('pinConfirmInput').value = '';
+    setTimeout(() => document.getElementById('pinConfirmError').textContent = '', 2000);
+  }
+}
+
+// Close overlays on outside click - uses event delegation (works even if modals added late)
+document.addEventListener('click', function(e) {
+  if(e.target && e.target.id === 'confirmModal') closeConfirm();
+  if(e.target && e.target.id === 'netConfirmModal') closeNetConfirm();
+  const editIds = ['editTodoModal','editHabitModal','editSemModal','editLearnModal','editIdeaModal','editContactModal'];
+  editIds.forEach(id => { if(e.target && e.target.id === id) closeEditModal(id); });
+});
+
+// ===== EDIT SYSTEM =====
+let editingId = null;
+let editingType = null;
+
+function closeEditModal(id) {
+  document.getElementById(id).classList.remove('open');
+  editingId = null; editingType = null;
+}
+
+// Close edit overlays on outside click
+['editTodoModal','editHabitModal','editSemModal','editLearnModal','editIdeaModal','editContactModal'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', function(e){ if(e.target===this) closeEditModal(id); });
+});
+
+// --- EDIT TODO ---
+function openEditTodo(id) {
+  const t = todos.find(x => x.id === id); if (!t) return;
+  editingId = id;
+  document.getElementById('editTodoTitle').value = t.title;
+  document.getElementById('editTodoType').value = t.type;
+  document.getElementById('editTodoPri').value = t.priority;
+  document.getElementById('editTodoDl').value = t.deadline || '';
+  document.getElementById('editTodoModal').classList.add('open');
+}
+function saveEditTodo() {
+  const t = todos.find(x => x.id === editingId); if (!t) return;
+  t.title = document.getElementById('editTodoTitle').value.trim() || t.title;
+  t.type = document.getElementById('editTodoType').value;
+  t.priority = document.getElementById('editTodoPri').value;
+  t.deadline = document.getElementById('editTodoDl').value;
+  saveTodos(); renderTodos();
+  closeEditModal('editTodoModal');
+  showNotif('✅', 'Task Updated', t.title.substring(0,30), 'ok');
+}
+
+// --- EDIT HABIT ---
+function openEditHabit(id) {
+  const h = [...habits.daily, ...habits.weekly].find(x => x.id === id); if (!h) return;
+  editingId = id;
+  document.getElementById('editHabitName').value = h.name;
+  document.getElementById('editHabitMeta').value = h.meta || '';
+  document.getElementById('editHabitType').value = h.type || 'daily';
+  document.getElementById('editHabitModal').classList.add('open');
+}
+function saveEditHabit() {
+  const newType = document.getElementById('editHabitType').value;
+  // Remove from both lists
+  let h = habits.daily.find(x => x.id === editingId) || habits.weekly.find(x => x.id === editingId);
+  if (!h) return;
+  habits.daily = habits.daily.filter(x => x.id !== editingId);
+  habits.weekly = habits.weekly.filter(x => x.id !== editingId);
+  h.name = document.getElementById('editHabitName').value.trim() || h.name;
+  h.meta = document.getElementById('editHabitMeta').value.trim();
+  h.type = newType;
+  if (newType === 'daily') habits.daily.push(h);
+  else habits.weekly.push(h);
+  saveHabits(); renderHabits();
+  closeEditModal('editHabitModal');
+  showNotif('✅', 'Task Updated', h.name.substring(0,30), 'ok');
+}
+
+// --- EDIT SEMESTER ---
+function openEditSem(id) {
+  const s = semesters.find(x => x.id === id); if (!s) return;
+  editingId = id;
+  document.getElementById('editSemTitle').value = s.title;
+  document.getElementById('editSemPhase').value = s.phase;
+  document.getElementById('editSemYear').value = s.year || '';
+  document.getElementById('editSemModal').classList.add('open');
+}
+function saveEditSem() {
+  const s = semesters.find(x => x.id === editingId); if (!s) return;
+  s.title = document.getElementById('editSemTitle').value.trim() || s.title;
+  s.phase = document.getElementById('editSemPhase').value;
+  s.year = document.getElementById('editSemYear').value;
+  saveSems(); renderSemesters();
+  closeEditModal('editSemModal');
+  showNotif('✅', 'Phase Updated', s.title.substring(0,30), 'ok');
+}
+
+// --- EDIT LEARN ---
+function openEditLearn(id) {
+  const l = learns.find(x => x.id === id); if (!l) return;
+  editingId = id;
+  document.getElementById('editLearnTitle').value = l.title;
+  document.getElementById('editLearnType').value = l.type;
+  document.getElementById('editLearnCat').value = l.cat;
+  document.getElementById('editLearnLesson').value = l.lesson || '';
+  document.getElementById('editLearnModal').classList.add('open');
+}
+function saveEditLearn() {
+  const l = learns.find(x => x.id === editingId); if (!l) return;
+  l.title = document.getElementById('editLearnTitle').value.trim() || l.title;
+  l.type = document.getElementById('editLearnType').value;
+  l.cat = document.getElementById('editLearnCat').value;
+  l.lesson = document.getElementById('editLearnLesson').value.trim();
+  localStorage.setItem('fai_learns', JSON.stringify(learns));
+  renderLearn();
+  closeEditModal('editLearnModal');
+  showNotif('✅', 'Resource Updated', l.title.substring(0,30), 'ok');
+}
+
+// --- EDIT IDEA ---
+function openEditIdea(id) {
+  const i = ideas.find(x => x.id === id); if (!i) return;
+  editingId = id;
+  document.getElementById('editIdeaTitle').value = i.title;
+  document.getElementById('editIdeaDesc').value = i.desc || '';
+  document.getElementById('editIdeaCat').value = i.cat;
+  document.getElementById('editIdeaStatus').value = i.status;
+  document.getElementById('editIdeaModal').classList.add('open');
+}
+function saveEditIdea() {
+  const i = ideas.find(x => x.id === editingId); if (!i) return;
+  i.title = document.getElementById('editIdeaTitle').value.trim() || i.title;
+  i.desc = document.getElementById('editIdeaDesc').value.trim();
+  i.cat = document.getElementById('editIdeaCat').value;
+  i.status = document.getElementById('editIdeaStatus').value;
+  localStorage.setItem('fai_ideas', JSON.stringify(ideas));
+  renderIdeas();
+  closeEditModal('editIdeaModal');
+  showNotif('✅', 'Idea Updated', i.title.substring(0,30), 'ok');
+}
+
+// --- EDIT CONTACT ---
+function openEditContact(id) {
+  const c = contacts.find(x => x.id === id); if (!c) return;
+  editingId = id;
+  document.getElementById('editNetName').value = c.name;
+  document.getElementById('editNetRole').value = c.role || '';
+  document.getElementById('editNetPhone').value = c.phone || '';
+  document.getElementById('editNetEmail').value = c.email || '';
+  document.getElementById('editNetLinkedin').value = c.linkedin || '';
+  document.getElementById('editNetWhatsapp').value = c.whatsapp || '';
+  document.getElementById('editNetOrg').value = c.org || '';
+  document.getElementById('editNetCat').value = c.cat;
+  document.getElementById('editNetStrength').value = c.strength;
+  document.getElementById('editNetNote').value = c.note || '';
+  document.getElementById('editContactModal').classList.add('open');
+}
+function saveEditContact() {
+  const c = contacts.find(x => x.id === editingId); if (!c) return;
+  c.name = document.getElementById('editNetName').value.trim() || c.name;
+  c.role = document.getElementById('editNetRole').value.trim();
+  c.phone = document.getElementById('editNetPhone').value.trim();
+  c.email = document.getElementById('editNetEmail').value.trim();
+  c.linkedin = document.getElementById('editNetLinkedin').value.trim();
+  c.whatsapp = document.getElementById('editNetWhatsapp').value.trim();
+  c.org = document.getElementById('editNetOrg').value.trim();
+  c.cat = document.getElementById('editNetCat').value;
+  c.strength = document.getElementById('editNetStrength').value;
+  c.note = document.getElementById('editNetNote').value.trim();
+  localStorage.setItem('fai_contacts', JSON.stringify(contacts));
+  renderContacts();
+  closeEditModal('editContactModal');
+  showNotif('✅', 'Contact Updated', c.name, 'ok');
+}
+
+// Boot
+init();
+</script>
+
+<!-- ========== MODULE 5: LEARNING LOG ========== -->
+<div class="screen" id="m5Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>Learning Log</h2>
+      <p>Track every book, course & video 📚</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <div style="background:var(--off);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px;">
+      <input class="todo-add-input" id="learnTitle" placeholder="Book / Course / Video title..." style="width:100%;margin-bottom:10px;" onkeydown="">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <select id="learnType" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="book">📖 Book</option>
+          <option value="course">🎓 Course</option>
+          <option value="video">▶️ Video/YT</option>
+          <option value="article">📰 Article</option>
+          <option value="podcast">🎙️ Podcast</option>
+        </select>
+        <select id="learnCat" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="ds">📊 Data Science</option>
+          <option value="pm">💼 Product Mgmt</option>
+          <option value="business">🏢 Business</option>
+          <option value="leadership">🎯 Leadership</option>
+          <option value="mba">🎓 MBA Prep</option>
+          <option value="selfdev">🌱 Self-Dev</option>
+          <option value="other">📌 Other</option>
+        </select>
+      </div>
+      <input class="todo-add-input" id="learnLesson" placeholder="Key lesson or takeaway (optional)..." style="width:100%;margin-bottom:10px;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:12px;color:var(--muted);white-space:nowrap;">Rating:</span>
+        <div id="learnStars" style="display:flex;gap:4px;">
+          <span class="star" onclick="setLearnRating(1)" style="font-size:20px;cursor:pointer;opacity:0.3;">⭐</span>
+          <span class="star" onclick="setLearnRating(2)" style="font-size:20px;cursor:pointer;opacity:0.3;">⭐</span>
+          <span class="star" onclick="setLearnRating(3)" style="font-size:20px;cursor:pointer;opacity:0.3;">⭐</span>
+          <span class="star" onclick="setLearnRating(4)" style="font-size:20px;cursor:pointer;opacity:0.3;">⭐</span>
+          <span class="star" onclick="setLearnRating(5)" style="font-size:20px;cursor:pointer;opacity:0.3;">⭐</span>
+        </div>
+        <button class="todo-submit" onclick="addLearn()" style="margin-left:auto;">Log It</button>
+      </div>
+    </div>
+    <!-- Filter -->
+    <div style="display:flex;gap:7px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;">
+      <div class="todo-cat active" onclick="setLearnFilter('all',this)">All</div>
+      <div class="todo-cat" onclick="setLearnFilter('ds',this)">📊 DS</div>
+      <div class="todo-cat" onclick="setLearnFilter('pm',this)">💼 PM</div>
+      <div class="todo-cat" onclick="setLearnFilter('business',this)">🏢 Business</div>
+      <div class="todo-cat" onclick="setLearnFilter('leadership',this)">🎯 Leadership</div>
+      <div class="todo-cat" onclick="setLearnFilter('mba',this)">🎓 MBA</div>
+      <div class="todo-cat" onclick="setLearnFilter('selfdev',this)">🌱 Self-Dev</div>
+    </div>
+    <div id="learnList"></div>
+  </div>
+</div>
+
+<!-- ========== MODULE 6: IDEAS VAULT ========== -->
+<div class="screen" id="m6Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>Ideas Vault</h2>
+      <p>Capture every idea before it disappears 💡</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <div style="background:var(--off);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px;">
+      <input class="todo-add-input" id="ideaTitle" placeholder="Idea title..." style="width:100%;margin-bottom:10px;">
+      <textarea id="ideaDesc" placeholder="Describe your idea... (problem, solution, opportunity)" style="width:100%;background:white;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:none;height:70px;margin-bottom:10px;"></textarea>
+      <div style="display:flex;gap:8px;">
+        <select id="ideaCat" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="product">📱 Product Idea</option>
+          <option value="business">🏢 Business</option>
+          <option value="ds">📊 DS Project</option>
+          <option value="research">🔬 Research</option>
+          <option value="career">🎯 Career Move</option>
+          <option value="other">📌 Other</option>
+        </select>
+        <select id="ideaStatus" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="raw">💭 Raw Idea</option>
+          <option value="exploring">🔍 Exploring</option>
+          <option value="active">🚀 Active</option>
+          <option value="paused">⏸️ Paused</option>
+        </select>
+        <button class="todo-submit" onclick="addIdea()">Save</button>
+      </div>
+    </div>
+    <div id="ideaList"></div>
+  </div>
+</div>
+
+<!-- ========== MODULE 7: NETWORK TRACKER ========== -->
+<div class="screen" id="m7Screen">
+  <div class="mod-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="mod-header-text">
+      <h2>Network Tracker</h2>
+      <p>Your relationships are your net worth 🤝</p>
+    </div>
+  </div>
+  <div class="mod-body">
+    <!-- ADD CONTACT FORM -->
+    <div style="background:var(--off);border:1.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;">
+
+      <!-- Row 1: Name + Role -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="todo-add-input" id="netName" placeholder="Full name..." style="flex:1;">
+        <input class="todo-add-input" id="netRole" placeholder="Role / Title..." style="flex:1;">
+      </div>
+
+      <!-- Row 2: Phone + Email -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="todo-add-input" id="netPhone" placeholder="📞 Phone number..." style="flex:1;" type="tel">
+        <input class="todo-add-input" id="netEmail" placeholder="📧 Email..." style="flex:1;" type="email">
+      </div>
+
+      <!-- Row 3: LinkedIn + WhatsApp -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="todo-add-input" id="netLinkedin" placeholder="🔗 LinkedIn URL..." style="flex:1;">
+        <input class="todo-add-input" id="netWhatsapp" placeholder="💬 WhatsApp..." style="flex:1;">
+      </div>
+
+      <!-- Row 4: Category + Relation type -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <select id="netCat" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="mentor">🌟 Mentor</option>
+          <option value="professor">📚 Professor</option>
+          <option value="teacher">🏫 Teacher</option>
+          <option value="classmate">👥 Classmate</option>
+          <option value="friend">🤝 Friend</option>
+          <option value="professional">💼 Professional</option>
+          <option value="senior">🎓 Senior/Alumni</option>
+          <option value="investor">💰 Investor</option>
+          <option value="family">👨‍👩‍👦 Family</option>
+        </select>
+        <select id="netStrength" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;">
+          <option value="strong">🔴 Close</option>
+          <option value="medium">🟡 Growing</option>
+          <option value="weak">🟢 New</option>
+        </select>
+      </div>
+
+      <!-- Row 5: Institution / Company -->
+      <input class="todo-add-input" id="netOrg" placeholder="🏛️ University / Company / Organization..." style="width:100%;margin-bottom:10px;">
+
+      <!-- Row 6: Notes -->
+      <textarea id="netNote" placeholder="📝 Notes — how you met, what they can help with, topics to discuss..." style="width:100%;background:white;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:none;height:60px;margin-bottom:10px;"></textarea>
+
+      <button class="todo-submit" onclick="addContact()" style="width:100%;padding:11px;border-radius:10px;background:var(--navy);color:white;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Add to Network</button>
+    </div>
+
+    <!-- STATS -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;" id="netStats"></div>
+
+    <!-- FILTER CHIPS -->
+    <div style="display:flex;gap:7px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;">
+      <div class="todo-cat active" onclick="setNetFilter('all',this)">All</div>
+      <div class="todo-cat" onclick="setNetFilter('mentor',this)">🌟 Mentors</div>
+      <div class="todo-cat" onclick="setNetFilter('professor',this)">📚 Professors</div>
+      <div class="todo-cat" onclick="setNetFilter('teacher',this)">🏫 Teachers</div>
+      <div class="todo-cat" onclick="setNetFilter('classmate',this)">👥 Classmates</div>
+      <div class="todo-cat" onclick="setNetFilter('professional',this)">💼 Professionals</div>
+      <div class="todo-cat" onclick="setNetFilter('senior',this)">🎓 Seniors</div>
+      <div class="todo-cat" onclick="setNetFilter('friend',this)">🤝 Friends</div>
+    </div>
+
+    <div id="netList"></div>
+  </div>
+</div>
+
+
+
+
+<script>
+// ===== SERVICE WORKER — OFFLINE SUPPORT =====
+if ('serviceWorker' in navigator) {
+  // Inline service worker as blob URL so it works from any host including GitHub Pages
+  const swCode = `
+    const CACHE = 'faridpa-v1';
+    const URLS = ['/FaridAI/', '/FaridAI/index.html'];
+
+    self.addEventListener('install', e => {
+      e.waitUntil(
+        caches.open(CACHE).then(cache => {
+          // Cache the page itself
+          return cache.addAll(URLS).catch(() => {
+            // If URLs fail, just install anyway
+            return Promise.resolve();
+          });
+        })
+      );
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', e => {
+      e.waitUntil(
+        caches.keys().then(keys =>
+          Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+        )
+      );
+      self.clients.claim();
+    });
+
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(cached => {
+          if (cached) return cached;
+          return fetch(e.request).then(response => {
+            // Cache successful responses
+            if (response && response.status === 200) {
+              const clone = response.clone();
+              caches.open(CACHE).then(cache => cache.put(e.request, clone));
+            }
+            return response;
+          }).catch(() => {
+            // Return cached index if network fails
+            return caches.match('/FaridAI/index.html');
+          });
+        })
+      );
+    });
+  `;
+
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+
+  navigator.serviceWorker.register(swUrl, { scope: '/' })
+    .then(reg => {
+      console.log('FaridPA offline ready ✅');
+      // Show offline ready notification after first cache
+      reg.addEventListener('updatefound', () => {
+        const sw = reg.installing;
+        sw.addEventListener('statechange', () => {
+          if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+            showNotif('✅', 'App Updated!', 'FaridPA is updated and ready offline', 'ok');
+          } else if (sw.state === 'installed') {
+            showNotif('📶', 'Offline Ready!', 'FaridPA now works without internet!', 'ok');
+          }
+        });
+      });
+    })
+    .catch(err => console.log('SW not supported here:', err));
+}
+</script>
+
+
+
+</body>
+</html>
